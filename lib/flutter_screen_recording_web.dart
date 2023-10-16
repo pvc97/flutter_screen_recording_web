@@ -41,7 +41,7 @@ class WebFlutterScreenRecording extends FlutterScreenRecordingPlatform {
         "audio": recordAudio,
         "video": recordVideo,
         "preferCurrentTab": true,
-        "selfBrowserSurface": true,
+        "selfBrowserSurface": "include",
       });
       this.name = name;
       if (recordAudio) {
