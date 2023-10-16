@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:html';
-import 'dart:js' as JS;
 import 'dart:js_util' as JSUtils;
 import 'dart:html' as HTML;
 
+// ignore: camel_case_types
 class navigator {
   static Future<MediaStream> getUserMedia(
       Map<String, dynamic> mediaConstraints) async {
@@ -27,7 +27,7 @@ class navigator {
       Map<String, dynamic> mediaConstraints) async {
     try {
       final mediaDevices = HTML.window.navigator.mediaDevices;
-      final JS.JsObject arg = JS.JsObject.jsify(mediaConstraints);
+      final arg = mapToJSObj(mediaConstraints);
 
       final HTML.MediaStream jsStream =
           await JSUtils.promiseToFuture<HTML.MediaStream>(
@@ -38,8 +38,19 @@ class navigator {
     }
   }
 
+  static Object mapToJSObj(Map<dynamic, dynamic> a) {
+    var object = JSUtils.newObject();
+    a.forEach((k, v) {
+      var key = k;
+      var value = v;
+      JSUtils.setProperty(object, key, value);
+    });
+    return object;
+  }
+
   static Future<List<dynamic>> getSources() async {
-    final devices = await HTML.window.navigator.mediaDevices!.enumerateDevices();
+    final devices =
+        await HTML.window.navigator.mediaDevices!.enumerateDevices();
     final result = [];
     for (final device in devices) {
       result.add(<String, String>{
