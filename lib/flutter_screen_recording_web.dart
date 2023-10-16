@@ -48,7 +48,10 @@ class WebFlutterScreenRecording extends FlutterScreenRecordingPlatform {
         stream!.addTrack(audioStream.getAudioTracks()[0]);
       }
 
-      if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+      if (MediaRecorder.isTypeSupported('video/mp4;codecs=h264')) {
+        print("video/mp4;codecs=h264");
+        mimeType = 'video/mp4;codecs=h264,opus';
+      } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
         print('video/webm;codecs=vp9');
         mimeType = 'video/webm;codecs=vp9,opus';
       } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8.0')) {
@@ -60,9 +63,6 @@ class WebFlutterScreenRecording extends FlutterScreenRecordingPlatform {
       } else if (MediaRecorder.isTypeSupported('video/mp4;codecs=h265')) {
         mimeType = 'video/mp4;codecs=h265,opus';
         print("video/mp4;codecs=h265");
-      } else if (MediaRecorder.isTypeSupported('video/mp4;codecs=h264')) {
-        print("video/mp4;codecs=h264");
-        mimeType = 'video/mp4;codecs=h264,opus';
       } else if (MediaRecorder.isTypeSupported('video/webm;codecs=h265')) {
         print("video/webm;codecs=h265");
         mimeType = 'video/webm;codecs=h265,opus';
