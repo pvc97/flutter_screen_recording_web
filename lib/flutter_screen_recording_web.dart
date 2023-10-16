@@ -39,12 +39,14 @@ class WebFlutterScreenRecording extends FlutterScreenRecordingPlatform {
       }
       stream = await navigator.getDisplayMedia({
         "audio": recordAudio,
-        "video": recordVideo,
+        "video": {
+          'cursor': 'never',
+          'frameRate': 60,
+          'height': 1080,
+          'width': 1920,
+        },
         "preferCurrentTab": true,
         "selfBrowserSurface": "include",
-        "height": {"min": 720, "max": 1280},
-        "width": {"min": 1080, "max": 1920},
-        "frameRate": {"min": 15, "ideal": 24, "max": 30},
       });
       this.name = name;
       if (recordAudio) {
@@ -76,7 +78,10 @@ class WebFlutterScreenRecording extends FlutterScreenRecordingPlatform {
         mimeType = 'video/webm';
       }
 
-      this.mediaRecorder = new MediaRecorder(stream!, {'mimeType': mimeType});
+      this.mediaRecorder = new MediaRecorder(stream!, {
+        'mimeType': mimeType,
+        'videoBitsPerSecond': 5000000, // 5Mbps
+      });
 
       this.mediaRecorder!.addEventListener('dataavailable', (Event event) {
         print("datavailable ${event.runtimeType}");

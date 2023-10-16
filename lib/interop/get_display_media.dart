@@ -27,7 +27,7 @@ class navigator {
       Map<String, dynamic> mediaConstraints) async {
     try {
       final mediaDevices = HTML.window.navigator.mediaDevices;
-      final arg = mapToJSObj(mediaConstraints);
+      final arg = mapToJsObject(mediaConstraints);
 
       final HTML.MediaStream jsStream =
           await JSUtils.promiseToFuture<HTML.MediaStream>(
@@ -38,12 +38,14 @@ class navigator {
     }
   }
 
-  static Object mapToJSObj(Map<dynamic, dynamic> a) {
+  static Object mapToJsObject(Map map) {
     var object = JSUtils.newObject();
-    a.forEach((k, v) {
-      var key = k;
-      var value = v;
-      JSUtils.setProperty(object, key, value);
+    map.forEach((k, v) {
+      if (v is Map) {
+        JSUtils.setProperty(object, k, mapToJsObject(v));
+      } else {
+        JSUtils.setProperty(object, k, v);
+      }
     });
     return object;
   }
