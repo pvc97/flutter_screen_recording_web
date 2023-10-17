@@ -78,9 +78,9 @@ class WebFlutterScreenRecording extends FlutterScreenRecordingPlatform {
         mimeType = 'video/webm';
       }
 
-      this.mediaRecorder = new MediaRecorder(stream!, {
+      this.mediaRecorder = MediaRecorder(stream!, {
         'mimeType': mimeType,
-        'videoBitsPerSecond': 5000000, // 5Mbps
+        'videoBitsPerSecond': 3000000, // 3 Mbps
       });
 
       this.mediaRecorder!.addEventListener('dataavailable', (Event event) {
@@ -106,14 +106,14 @@ class WebFlutterScreenRecording extends FlutterScreenRecordingPlatform {
 
   @override
   Future<String> get stopRecordScreen {
-    final c = new Completer<String>();
+    final c = Completer<String>();
     this.mediaRecorder!.addEventListener("stop", (event) {
       mediaRecorder = null;
       this.stream!.getTracks().forEach((element) => element.stop());
       this.stream = null;
       final a = document.createElement("a") as AnchorElement;
       final url = Url.createObjectUrl(
-          new Blob(List<dynamic>.from([recordedChunks]), mimeType));
+          Blob(List<dynamic>.from([recordedChunks]), mimeType));
       document.body!.append(a);
       a.style.display = "none";
       a.href = url;
